@@ -355,22 +355,19 @@ pub fn calloc(number: usize, size: usize) -> *mut () {
     }
 }
 
-fn print(message: &str) -> isize {
-    let sys_call_result: i32;
-    let ptr_message = message.as_ptr();
-    let size: usize = message.len();
+fn print(msg: &str) -> isize {
+    let result: isize;
     unsafe {
-        asm! {
+        asm! (
+            "mov rax, 0x01",
+            "mov rdi, 1",
             "syscall",
-            inout("rax") 1  => sys_call_result,
-            in("rdi") 1,
-            in("rsi") ptr_message,
-            in("rdx") size,
-            lateout("rcx") _,
-            lateout("r11") _,
-        };
+            in("rsi") msg.as_ptr(),
+            in("rdx") msg.len(),
+            out("rax") result,
+        );
     }
-    sys_call_result as isize
+    result
 }
 
 pub fn free(pointer: *mut ()) {

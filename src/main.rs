@@ -1,6 +1,5 @@
 use custom_allocator;
 
-
 fn main() {
     let ptr1 = custom_allocator::malloc(10);
     let ptr2 = custom_allocator::calloc(5, 10);
