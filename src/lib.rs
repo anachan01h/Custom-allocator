@@ -42,11 +42,9 @@ fn r_brk(address: *mut ()) -> i32 {
     unsafe {
         asm! (
             "mov rax, 0x0C",
-            "mov rdi, {}",
             "syscall",
-            "mov {}, rax",
-            in(reg) address,
-            out(reg) CURRENT_BREAK,
+            in("rdi") address,
+            out("rax") CURRENT_BREAK,
         );
         if CURRENT_BREAK < address {
             -1
